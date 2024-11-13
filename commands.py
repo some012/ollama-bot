@@ -53,9 +53,6 @@ async def github(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    if user_id not in user_ids:
-        user_ids[user_id] = {'last_message': None, 'preferences': {}}
-        context_memory[user_id] = []
 
     try:
         if user_id not in user_ids:
