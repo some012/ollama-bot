@@ -1,5 +1,6 @@
 services:
   ollama:
+    build: .
     image: ollama/ollama
     container_name: ollama
     ports:
