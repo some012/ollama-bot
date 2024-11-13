@@ -7,6 +7,7 @@ class BotSettings(BaseSettings):
     )
 
     FATHER_TOKEN: str = "FWGGWEJFOWEFJWEJFQWFQW;JFF"
+    GITHUB_URL: str = "https://github.com/username/repository"
 
 
 bot_settings = BotSettings()
