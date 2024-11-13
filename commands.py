@@ -62,7 +62,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         message_text = update.message.text
         context_messages = context_memory[user_id]
 
-
         context_messages.append({'role': 'user', 'content': message_text})
         context_memory[user_id] = context_messages[-8:]
         logging.log(level=logging.INFO, msg="Added user's message to context")
