@@ -1,7 +1,8 @@
 import logging
 import nest_asyncio
 import ollama
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineQueryResultArticle, InputTextMessageContent, \
+    InlineKeyboardMarkup, CallbackQuery
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
@@ -27,8 +28,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 async def about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     about_text = (
-        "🤖 *Llama3 Бот* 🤖\n\n"
-        "Этот бот создан на базе мощной нейросети llama3, которая поможет вам находить ответы на сложные вопросы, "
+        "🤖 *Ollama Бот* 🤖\n\n"
+        "Этот бот создан на базе мощных нейросетей на выбор, которые помогут вам находить ответы на сложные вопросы, "
         "обсуждать разнообразные темы, генерировать идеи и тексты, а также просто вести интересные беседы!\n\n"
         "*Что бот умеет?*\n"
         "- Отвечает на любые вопросы\n"
@@ -52,9 +53,9 @@ async def github(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-
     try:
+        user_id = update.effective_user.id
+
         if user_id not in user_ids:
             user_ids[user_id] = {'last_message': None, 'preferences': {}}
             context_memory[user_id] = []
@@ -67,7 +68,8 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.log(level=logging.INFO, msg="Added user's message to context")
 
         await update.message.chat.send_action(ChatAction.TYPING)
-        response = ollama.chat(model='llama3', messages=context_memory[user_id])
+
+        response = ollama.chat(model="llama3.2-vision", messages=context_memory[user_id])
         bot_reply = response['message']['content']
         logging.log(level=logging.INFO, msg="Bot in process of response")
 
@@ -79,5 +81,5 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logging.log(level=logging.INFO, msg="Bot send response")
 
     except Exception as e:
-        logging.error(f"Error while getting response from ollama: {e}")
-        await update.message.reply_text('Произошла ошибка, попробуйте позже.')
+        logging.error(f"Error while handling message: {e}")
+        await update.message.reply_text('Произошла ошибка. Попробуйте еще раз.')
