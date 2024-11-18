@@ -14,7 +14,7 @@ async def main() -> None:
     application.add_handler(CommandHandler('github', github))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-    await application.run_polling()
+    application.run_polling()
 
 
 if __name__ == '__main__':
