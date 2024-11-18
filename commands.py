@@ -1,8 +1,7 @@
 import logging
 import nest_asyncio
 import ollama
-from telegram import Update, InlineKeyboardButton, InlineQueryResultArticle, InputTextMessageContent, \
-    InlineKeyboardMarkup, CallbackQuery
+from telegram import Update
 from telegram.constants import ChatAction
 from telegram.ext import ContextTypes
 
@@ -20,16 +19,18 @@ context_memory = {}
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
         text=f'Привет, *{update.effective_user.first_name}*! '
-             f'Чем могу вам помочь?',
+             f'Напиши любое сообщение, и бот тебе ответит!',
         parse_mode="Markdown"
     )
     logging.log(level=logging.INFO, msg="/start message sent")
+    user_ids.clear()
+    context_memory.clear()
 
 
 async def about(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     about_text = (
         "🤖 *Ollama Бот* 🤖\n\n"
-        "Этот бот создан на базе мощных нейросетей на выбор, которые помогут вам находить ответы на сложные вопросы, "
+        "Этот бот создан на базе мощных нейросетей Ollama, которые помогут вам находить ответы на сложные вопросы, "
         "обсуждать разнообразные темы, генерировать идеи и тексты, а также просто вести интересные беседы!\n\n"
         "*Что бот умеет?*\n"
         "- Отвечает на любые вопросы\n"
@@ -77,7 +78,7 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         context_memory[user_id] = context_messages[-8:]
         logging.log(level=logging.INFO, msg="Added bot's message to context")
 
-        await update.message.reply_text(bot_reply)
+        await update.message.reply_text(bot_reply, parse_mode="Markdown")
         logging.log(level=logging.INFO, msg="Bot send response")
 
     except Exception as e:
