@@ -1,3 +1,21 @@
+# Подготовка
+
+Cоздать файл .env и добавить туда наподобии .env.example свой токен, взятый у BotFather в Telegram
+
+```python
+
+python -m venv venv
+
+source .venv/bin/activate.fish
+
+pip install -r requirements.txt
+
+```
+После установки Ollama и выбора необходимой модели
+
+```python
+python run.py
+```
 
 ### Бот запускается локально, краткие инструкции уложены здесь, либо же их можно найти в полном виде в документации Ollama:
 
